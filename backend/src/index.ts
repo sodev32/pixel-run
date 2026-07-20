@@ -3,6 +3,8 @@ import express from 'express';
 const app = express();
 const PORT = 3000;
 
+const lintcheck = 'aiueo';
+
 app.get('/health', (_req, res) => {
   res.send('OK');
 });
