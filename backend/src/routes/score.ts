@@ -1,26 +1,12 @@
 import { Router } from 'express';
-
-type Score = {
-  playerName: string;
-  time: number;
-};
+import { validateScore } from '../middleware/validateScore';
+import { scores } from '../data/score';
+import type { Score } from '../data/score';
 
 const router = Router();
-const scores: Score[] = [];
 
-router.post('/', (req, res) => {
+router.post('/', validateScore, (req, res) => {
   const { playerName, time } = req.body;
-
-  if (!playerName) {
-    return res.status(400).json({ message: 'Player name is required' });
-  }
-
-  if (typeof time !== 'number') {
-    return res
-      .status(400)
-      .json({ message: 'Time is required and must be a number' });
-  }
-
   const score: Score = { playerName, time };
   scores.push(score);
   console.log(score);
