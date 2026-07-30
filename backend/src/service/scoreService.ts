@@ -16,3 +16,7 @@ export function getScores() {
   scores.sort((a, b) => a.time - b.time);
   return scores;
 }
+
+export function getScoreById(id: string) {
+  return scores.find((score) => score.id === id);
+}
