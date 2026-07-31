@@ -1,4 +1,5 @@
 import app from './app';
+import './db/database';
 
 const PORT = 3000;
 

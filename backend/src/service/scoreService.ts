@@ -1,15 +1,19 @@
 import type { Score } from '../data/score';
 import { scores } from '../data/score';
 import { randomUUID } from 'crypto';
+import db from '../db/database';
 
 export function addScore(playerName: string, time: number) {
-  const score: Score = {
-    id: randomUUID(),
-    playerName,
-    time,
-  };
-  scores.push(score);
-  return score;
+  const id = randomUUID();
+  db.run(
+    `
+    INSERT INTO scores(id, playerName,time)
+    VALUES(?,?,?)
+    `,
+    [id, playerName, time],
+  );
+
+  return { id, playerName, time };
 }
 
 export function getScores() {
