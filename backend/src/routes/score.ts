@@ -5,6 +5,7 @@ import {
   getScores,
   getScoreById,
   deleteScore,
+  updateScore,
 } from '../service/scoreService';
 
 const router = Router();
@@ -38,6 +39,17 @@ router.delete('/:id', async (req, res) => {
     return res.status(404).json({ message: 'Score not found' });
   }
   res.status(200).json({ message: 'Score deleted' });
+});
+
+router.put('/:id', async (req, res) => {
+  console.log(req.body);
+  const { id } = req.params;
+  const { playerName, time } = req.body;
+  const updateResult = await updateScore(id, playerName, time);
+  if (updateResult === 0) {
+    return res.status(404).json({ message: 'id not found' });
+  }
+  res.status(200).json({ message: 'Score updated' });
 });
 
 export default router;

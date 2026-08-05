@@ -74,3 +74,27 @@ export async function deleteScore(id: string) {
     );
   });
 }
+
+export async function updateScore(
+  id: string,
+  playerName: string,
+  newTime: number,
+) {
+  return new Promise<number>((resolve, reject) => {
+    db.run(
+      `
+      UPDATE scores
+      SET playerName = ? ,time = ?
+      WHERE id =?;
+      `,
+      [playerName, newTime, id],
+      function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      },
+    );
+  });
+}
