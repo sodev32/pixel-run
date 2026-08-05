@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import { validateScore } from '../middleware/validateScore';
-import { addScore, getScores, getScoreById } from '../service/scoreService';
+import {
+  addScore,
+  getScores,
+  getScoreById,
+  deleteScore,
+} from '../service/scoreService';
 
 const router = Router();
 
@@ -24,6 +29,15 @@ router.get('/:id', async (req, res) => {
   }
 
   res.status(200).json(scoreById);
+});
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const deleteResult = await deleteScore(id);
+  if (deleteResult === 0) {
+    return res.status(404).json({ message: 'Score not found' });
+  }
+  res.status(200).json({ message: 'Score deleted' });
 });
 
 export default router;

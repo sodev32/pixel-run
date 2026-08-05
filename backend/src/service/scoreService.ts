@@ -54,3 +54,23 @@ export async function getScoreById(id: string) {
     );
   });
 }
+
+export async function deleteScore(id: string) {
+  return new Promise<number>((resolve, reject) => {
+    db.run(
+      `
+      DELETE
+      FROM scores
+      WHERE id = ?;
+      `,
+      [id],
+      function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      },
+    );
+  });
+}
