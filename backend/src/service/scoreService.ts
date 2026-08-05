@@ -16,11 +16,41 @@ export function addScore(playerName: string, time: number) {
   return { id, playerName, time };
 }
 
-export function getScores() {
-  scores.sort((a, b) => a.time - b.time);
-  return scores;
+export async function getScores() {
+  return new Promise<Score[]>((resolve, reject) => {
+    db.all(
+      `
+      SELECT * 
+      FROM scores
+      ORDER BY time ASC;
+      `,
+      [],
+      (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows as Score[]);
+        }
+      },
+    );
+  });
 }
 
-export function getScoreById(id: string) {
-  return scores.find((score) => score.id === id);
+export async function getScoreById(id: string) {
+  return new Promise<Score | undefined>((resolve, reject) => {
+    db.get(
+      `
+      SELECT * FROM scores
+      WHERE id = ?
+      `,
+      [id],
+      (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows as Score | undefined);
+        }
+      },
+    );
+  });
 }

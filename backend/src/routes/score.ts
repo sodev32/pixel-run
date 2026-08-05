@@ -10,14 +10,14 @@ router.post('/', validateScore, (req, res) => {
   res.status(201).json({ message: `Score received from ${score.playerName}` });
 });
 
-router.get('/', (_req, res) => {
-  const sortedScores = getScores();
-  res.status(200).json(sortedScores);
+router.get('/', async (_req, res) => {
+  const scores = await getScores();
+  res.status(200).json(scores);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const scoreById = getScoreById(id);
+  const scoreById = await getScoreById(id);
 
   if (!scoreById) {
     return res.status(404).json({ message: 'Score not found' });
