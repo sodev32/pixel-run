@@ -10,9 +10,9 @@ import {
 
 const router = Router();
 
-router.post('/', validateScore, (req, res) => {
+router.post('/', validateScore, async (req, res) => {
   const { playerName, time } = req.body;
-  const score = addScore(playerName, time);
+  const score = await addScore(playerName, time);
   res.status(201).json({ message: `Score received from ${score.playerName}` });
 });
 

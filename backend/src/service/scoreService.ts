@@ -1,19 +1,25 @@
 import type { Score } from '../data/score';
-import { scores } from '../data/score';
 import { randomUUID } from 'crypto';
 import db from '../db/database';
 
-export function addScore(playerName: string, time: number) {
-  const id = randomUUID();
-  db.run(
-    `
+export async function addScore(playerName: string, time: number) {
+  return new Promise<Score>((resolve, reject) => {
+    const id = randomUUID();
+    db.run(
+      `
     INSERT INTO scores(id, playerName,time)
     VALUES(?,?,?)
     `,
-    [id, playerName, time],
-  );
-
-  return { id, playerName, time };
+      [id, playerName, time],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ id, playerName, time });
+        }
+      },
+    );
+  });
 }
 
 export async function getScores() {
